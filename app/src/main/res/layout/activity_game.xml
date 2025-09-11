@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameActivity">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <!-- Spørsmål -->
+        <TextView
+            android:id="@+id/text_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2 + 3 = ?"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Brukerens svar -->
+        <TextView
+            android:id="@+id/text_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="28sp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Tallknapper 0-9 -->
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rowCount="4"
+            android:columnCount="3">
+
+            <Button android:id="@+id/button_1" android:text="1"/>
+            <Button android:id="@+id/button_2" android:text="2"/>
+            <Button android:id="@+id/button_3" android:text="3"/>
+            <Button android:id="@+id/button_4" android:text="4"/>
+            <Button android:id="@+id/button_5" android:text="5"/>
+            <Button android:id="@+id/button_6" android:text="6"/>
+            <Button android:id="@+id/button_7" android:text="7"/>
+            <Button android:id="@+id/button_8" android:text="8"/>
+            <Button android:id="@+id/button_9" android:text="9"/>
+            <Button android:id="@+id/button_0" android:text="0"/>
+            <Button android:id="@+id/button_enter" android:text="OK"/>
+        </GridLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

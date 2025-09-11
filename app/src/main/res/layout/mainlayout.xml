@@ -7,30 +7,35 @@
     android:layout_height="match_parent">
 
     <!-- Bakgrunnsbilde -->
+
+    <!-- Tittel -->
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
         android:src="@drawable/bakgrunnApp"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <!-- Tittel -->
     <TextView
         android:id="@+id/text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mattespill"
-        android:textSize="36sp"
-        android:textColor="#FFFFFF"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="64dp"
+        android:text="@string/game_title"
+        android:textColor="@color/title_color"
+        android:textSize="48sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button_start"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="64dp"/>
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Start spill-knapp -->
     <Button
@@ -38,10 +43,14 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="@string/start_game"
-        app:layout_constraintTop_toBottomOf="@id/text_title"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/button_green"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_title"
+        android:layout_marginTop="164dp"/>
 
     <!-- Om spillet-knapp -->
     <Button
@@ -49,6 +58,10 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="@string/about_game"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/button_green"
         app:layout_constraintTop_toBottomOf="@id/button_start"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +73,10 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="@string/preferences"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/button_green"
         app:layout_constraintTop_toBottomOf="@id/button_about"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

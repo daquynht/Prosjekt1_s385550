@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Prosjekt1_s385550</string>
+
+    <!-- Meny -->
+    <string name="start_game"> Start spill </string>
+    <string name="about_game"> Om spillet</string>
+    <string name="preferences"> Preferanser </string>
+
+    <!-- Tittel -->
+    <string name="game_title">Mattespill</string>
 </resources>

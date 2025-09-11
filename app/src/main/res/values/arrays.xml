@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="questions">
+        <item>2 + 3</item>
+        <item>4 + 1</item>
+        <item>5 + 5</item>
+        <item>7 + 2</item>
+        <item>3 + 6</item>
+        <item>8 + 1</item>
+        <item>9 + 0</item>
+        <item>2 + 7</item>
+        <item>1 + 4</item>
+        <item>6 + 3</item>
+        <item>0 + 9</item>
+        <item>3 + 5</item>
+        <item>4 + 4</item>
+        <item>7 + 1</item>
+        <item>2 + 8</item>
+    </string-array>
+
+    <integer-array name="answers">
+        <item>5</item>
+        <item>5</item>
+        <item>10</item>
+        <item>9</item>
+        <item>9</item>
+        <item>9</item>
+        <item>9</item>
+        <item>9</item>
+        <item>5</item>
+        <item>9</item>
+        <item>9</item>
+        <item>8</item>
+        <item>8</item>
+        <item>8</item>
+        <item>10</item>
+    </integer-array>
+</resources>
