@@ -52,6 +52,7 @@
             <Button android:id="@+id/button_9" android:text="9"/>
             <Button android:id="@+id/button_0" android:text="0"/>
             <Button android:id="@+id/button_enter" android:text="OK"/>
+            <Button android:id="@+id/button_clear" android:text="C"/>"
         </GridLayout>
 
     </LinearLayout>

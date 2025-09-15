@@ -13,21 +13,21 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        //Henter ut arrays fra res
+        // Henter ut arrays fra res
         val questions = resources.getStringArray(R.array.questions)
         val answers = resources.getIntArray(R.array.answers)
 
-        //Tilfeldig spørsmål
+        // Tilfeldig spørsmål
         val randomIndex = questions.indices.random()
 
-        //Textview i layout
+        // TextViews i layout
         val questionTextView = findViewById<TextView>(R.id.text_question)
         val answerTextView = findViewById<TextView>(R.id.text_answer)
 
-        //Sett spørsmålstekst
+        // Sett spørsmålstekst
         questionTextView.text = questions[randomIndex]
 
-        //Knappene fra 0 til 9
+        // Tallknapper 0 til 9
         val buttons = listOf(
             findViewById<Button>(R.id.button_0),
             findViewById<Button>(R.id.button_1),
@@ -41,26 +41,32 @@ class GameActivity : AppCompatActivity() {
             findViewById<Button>(R.id.button_9),
         )
 
-        for (button in buttons){
+        for (button in buttons) {
             button.setOnClickListener {
-                //Legg til tallet i svarfeltet
+                // Legg til tallet i svarfeltet
                 val currentAnswer = answerTextView.text.toString()
                 answerTextView.text = currentAnswer + button.text
             }
         }
 
-        //OK-knappen
+        // OK-knappen
         val enterButton = findViewById<Button>(R.id.button_enter)
         enterButton.setOnClickListener {
             val userAnswer = answerTextView.text.toString().toIntOrNull()
 
-            if (userAnswer == null){
+            if (userAnswer == null) {
                 answerTextView.text = "Skriv inn et tall!"
-            } else if (userAnswer == answers[randomIndex]){
+            } else if (userAnswer == answers[randomIndex]) {
                 answerTextView.text = "Riktig!"
             } else {
                 answerTextView.text = "Feil! Svaret var ${answers[randomIndex]}"
             }
         }
+
+        //Clear-knappen
+        val clearButton = findViewById<Button>(R.id.button_clear)
+        clearButton.setOnClickListener {
+            answerTextView.text = ""
         }
     }
+}
