@@ -2,30 +2,30 @@ package com.example.prosjekt1_s385550
 
 import android.os.Bundle
 import android.widget.Button
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import android.widget.TextView
 
 class GameActivity : AppCompatActivity() {
+
+    private lateinit var questions: Array<String>
+    private lateinit var answers: IntArray
+    private var currentIndex = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
         // Henter ut arrays fra res
-        val questions = resources.getStringArray(R.array.questions)
-        val answers = resources.getIntArray(R.array.answers)
-
-        // Tilfeldig spørsmål
-        val randomIndex = questions.indices.random()
+        questions = resources.getStringArray(R.array.questions)
+        answers = resources.getIntArray(R.array.answers)
 
         // TextViews i layout
         val questionTextView = findViewById<TextView>(R.id.text_question)
         val answerTextView = findViewById<TextView>(R.id.text_answer)
+        val feedbackTextView = findViewById<TextView>(R.id.text_feedback) // ✅ Ny TextView
 
-        // Sett spørsmålstekst
-        questionTextView.text = questions[randomIndex]
+        // Last første spørsmål
+        loadNewQuestion(questionTextView, answerTextView, feedbackTextView)
 
         // Tallknapper 0 til 9
         val buttons = listOf(
@@ -43,7 +43,6 @@ class GameActivity : AppCompatActivity() {
 
         for (button in buttons) {
             button.setOnClickListener {
-                // Legg til tallet i svarfeltet
                 val currentAnswer = answerTextView.text.toString()
                 answerTextView.text = currentAnswer + button.text
             }
@@ -51,22 +50,44 @@ class GameActivity : AppCompatActivity() {
 
         // OK-knappen
         val enterButton = findViewById<Button>(R.id.button_enter)
+
         enterButton.setOnClickListener {
             val userAnswer = answerTextView.text.toString().toIntOrNull()
 
             if (userAnswer == null) {
-                answerTextView.text = "Skriv inn et tall!"
-            } else if (userAnswer == answers[randomIndex]) {
-                answerTextView.text = "Riktig!"
+                feedbackTextView.setTextColor(getColor(android.R.color.holo_red_dark))
+                feedbackTextView.text = "Skriv inn et tall!"
+            } else if (userAnswer == answers[currentIndex]) {
+                feedbackTextView.setTextColor(getColor(android.R.color.holo_green_dark))
+                feedbackTextView.text = "Riktig!"
             } else {
-                answerTextView.text = "Feil! Svaret var ${answers[randomIndex]}"
+                feedbackTextView.setTextColor(getColor(android.R.color.holo_red_dark))
+                feedbackTextView.text = "Feil! Svaret var ${answers[currentIndex]}"
             }
         }
 
-        //Clear-knappen
+        // Clear-knappen
         val clearButton = findViewById<Button>(R.id.button_clear)
         clearButton.setOnClickListener {
             answerTextView.text = ""
         }
+
+        // Neste-knappen
+        val nextButton = findViewById<Button>(R.id.button_next)
+        nextButton.setOnClickListener {
+            loadNewQuestion(questionTextView, answerTextView, feedbackTextView)
+        }
+    }
+
+    private fun loadNewQuestion(
+        questionTextView: TextView,
+        answerTextView: TextView,
+        feedbackTextView: TextView
+    ) {
+        currentIndex = questions.indices.random()
+        questionTextView.text = questions[currentIndex]
+        answerTextView.text = ""
+        feedbackTextView.text = ""
     }
 }
+

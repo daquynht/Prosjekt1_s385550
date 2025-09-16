@@ -11,5 +11,9 @@
     <color name="button_yellow">#FFEB3B</color>
     <color name="button_green">#1E5128</color>
     <color name="title_color">#211C6A</color>
+    <color name="knapp1">#57D1CA</color>
+    <color name="knapp2">#FFA5B8</color>
+    <color name="knapp3">#FFD18B</color>
+
 
 </resources>

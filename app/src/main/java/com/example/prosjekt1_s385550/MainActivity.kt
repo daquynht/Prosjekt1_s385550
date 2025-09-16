@@ -20,5 +20,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, GameActivity::class.java)
             startActivity(intent)
         }
+
+        //Preferanser knappen
+        val prefButton = findViewById<Button>(R.id.button_preferences)
+        prefButton.setOnClickListener {
+            val intent = Intent(this, PreferanserActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

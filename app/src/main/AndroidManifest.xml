@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Prosjekt1_s385550">
         <activity
             android:name=".GameActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -25,6 +25,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".PreferanserActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
