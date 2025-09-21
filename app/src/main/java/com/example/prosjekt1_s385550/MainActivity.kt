@@ -1,31 +1,32 @@
-package com.example.prosjekt1_s385550
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
-import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import android.content.Intent
-import android.widget.Button
-
-class MainActivity : AppCompatActivity() {
-    @SuppressLint("MissingInflatedId")
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.mainlayout)  // <-- peker til XML
+        setContent {
+            IntroComposeTheme {
+                val navController = rememberNavController()
+                val prefViewModel: PrefViewModel = viewModel()
 
-        //Start Spill-knappen
-        val startButton = findViewById<Button>(R.id.button_start)
-
-        //Knappen trykkes og GameActivity åpnes
-        startButton.setOnClickListener {
-            val intent = Intent(this, GameActivity::class.java)
-            startActivity(intent)
-        }
-
-        //Preferanser knappen
-        val prefButton = findViewById<Button>(R.id.button_preferences)
-        prefButton.setOnClickListener {
-            val intent = Intent(this, PreferanserActivity::class.java)
-            startActivity(intent)
+                NavHost(navController = navController, startDestination = "mainMenu") {
+                    composable("mainMenu") {
+                        MainMenu(
+                            prefViewModel = prefViewModel,
+                            onStartClick = { navController.navigate("game") },
+                            onPrefClick = { navController.navigate("preferences") },
+                            onAboutClick = { navController.navigate("about") } // vi lager senere
+                        )
+                    }
+                    composable("game") {
+                        GameScreen(prefViewModel = prefViewModel, onBack = { navController.popBackStack() })
+                    }
+                    composable("preferences") {
+                        PrefScreen(prefViewModel = prefViewModel, onBack = { navController.popBackStack() })
+                    }
+                }
+            }
         }
     }
 }
