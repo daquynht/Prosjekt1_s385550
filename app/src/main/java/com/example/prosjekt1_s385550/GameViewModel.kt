@@ -1,4 +1,4 @@
-package com.example.prosjekt1_s385550.ui.screens
+package com.example.prosjekt1_s385550
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -15,13 +15,27 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     var currentIndex by mutableStateOf(0)
     var currentAnswer by mutableStateOf("")
     var feedback by mutableStateOf("")
-    var currentQuestion by mutableStateOf(questionsArray[0])
+    var currentQuestion by mutableStateOf("")
+
+    var score by mutableStateOf(0)
+    var questionsAnswered by mutableStateOf(0)
+    var totalQuestions by mutableStateOf(0)
 
     private val usedIndices = mutableSetOf<Int>()
 
+    /** Starter et nytt spill med valgt antall spørsmål */
+    fun startGame(numQuestions: Int) {
+        totalQuestions = numQuestions
+        score = 0
+        questionsAnswered = 0
+        usedIndices.clear()
+        loadNewQuestion()
+    }
+
     fun loadNewQuestion() {
-        if (usedIndices.size == questionsArray.size) {
-            feedback = "Ingen flere spørsmål igjen!"
+        if (questionsAnswered >= totalQuestions) {
+            feedback = "Spillet er ferdig! Du fikk $score av $totalQuestions riktige 🎉"
+            currentQuestion = ""
             return
         }
 
@@ -49,10 +63,19 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         val userAnswer = currentAnswer.toIntOrNull()
         if (userAnswer == null) {
             feedback = "Skriv inn et tall!"
-        } else if (userAnswer == answersArray[currentIndex]) {
-            feedback = "Riktig!"
+            return
+        }
+
+        questionsAnswered++
+
+        if (userAnswer == answersArray[currentIndex]) {
+            score++
+            feedback = "Riktig! 🎉"
         } else {
             feedback = "Feil! Svaret var ${answersArray[currentIndex]}"
         }
+
+        // Last neste spørsmål hvis ikke ferdig
+        loadNewQuestion()
     }
 }
