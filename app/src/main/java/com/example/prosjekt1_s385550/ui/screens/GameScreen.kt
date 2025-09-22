@@ -2,101 +2,63 @@ package com.example.prosjekt1_s385550.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.prosjekt1_s385550.R
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.prosjekt1_s385550.GameViewModel
+import com.example.prosjekt1_s385550.PrefViewModel
 
+@Preview(showBackground = true)
 @Composable
-fun GameScreen(onBack: () -> Unit) {
-    val context = LocalContext.current
+fun GameScreen(
+    prefViewModel: PrefViewModel,
+    gameViewModel: GameViewModel,
+    onBack: () -> Unit
+) {
+    // Hent state fra GameViewModel
+    val score by gameViewModel.score.collectAsStateWithLifecycle()
+    val level by gameViewModel.level.collectAsStateWithLifecycle()
 
-    // Henter arrays fra res/values/arrays.xml
-    val questions = context.resources.getStringArray(R.array.questions)
-    val answers = context.resources.getIntArray(R.array.answers)
-
-    // State for spill
-    var currentIndex by remember { mutableStateOf(0) }
-    var answer by remember { mutableStateOf("") }
-    var feedback by remember { mutableStateOf("") }
-    var usedIndices by remember { mutableStateOf(mutableSetOf<Int>()) }
-
-    // Velger første spørsmål tilfeldig
-    if (usedIndices.isEmpty()) {
-        currentIndex = questions.indices.random()
-        usedIndices.add(currentIndex)
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = questions[currentIndex], style = MaterialTheme.typography.headlineMedium)
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(text = "Svar: $answer")
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Tallknapper
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            (0..9).forEach { num ->
-                Button(
-                    onClick = { answer += num.toString() },
-                    modifier = Modifier.padding(4.dp)
-                ) {
-                    Text(num.toString())
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Game Screen") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
                 }
-            }
+            )
         }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(text = "Score: $score", style = MaterialTheme.typography.headlineMedium)
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = "Level: $level", style = MaterialTheme.typography.headlineMedium)
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // OK-knapp
-        Button(onClick = {
-            val correct = answers[currentIndex]
-            feedback = if (answer.toIntOrNull() == correct) {
-                "Riktig!"
-            } else {
-                "Feil, svaret var $correct"
+            Spacer(modifier = Modifier.height(32.dp))
+            Button(onClick = { gameViewModel.increaseScore() }) {
+                Text("Increase Score")
             }
-        }) {
-            Text("OK")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(feedback)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Neste-knapp
-        Button(onClick = {
-            if (usedIndices.size == questions.size) {
-                feedback = "Ingen flere spørsmål igjen!"
-            } else {
-                // trekk et nytt tilfeldig spørsmål
-                var nextIndex: Int
-                do {
-                    nextIndex = questions.indices.random()
-                } while (usedIndices.contains(nextIndex))
-
-                currentIndex = nextIndex
-                usedIndices.add(nextIndex)
-                answer = ""
-                feedback = ""
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = { gameViewModel.nextLevel() }) {
+                Text("Next Level")
             }
-        }) {
-            Text("Neste spørsmål")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onBack) {
-            Text("Tilbake til meny")
         }
     }
 }
+
