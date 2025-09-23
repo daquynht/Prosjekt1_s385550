@@ -4,8 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,12 +31,15 @@ fun GameScreen(
         gameViewModel.startGame(numQuestions)
     }
 
+    // State for dialog
+    var showExitDialog by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Game Screen") },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = { showExitDialog = true }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                     }
                 }
@@ -56,7 +58,8 @@ fun GameScreen(
                 // Spørsmål og svar
                 Text(
                     text = gameViewModel.currentQuestion,
-                    style = MaterialTheme.typography.headlineMedium
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
@@ -66,7 +69,8 @@ fun GameScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = gameViewModel.feedback,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.Gray
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -121,5 +125,28 @@ fun GameScreen(
                 )
             }
         }
+
+        // Dialog vises når spilleren prøver å avslutte
+        if (showExitDialog) {
+            AlertDialog(
+                onDismissRequest = { showExitDialog = false },
+                title = { Text("Avslutte spillet?") },
+                text = { Text("Hvis du avslutter nå, mister du fremgangen din.") },
+                confirmButton = {
+                    TextButton(onClick = {
+                        showExitDialog = false
+                        onBack() // Gå tilbake
+                    }) {
+                        Text("Ja")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showExitDialog = false }) {
+                        Text("Nei")
+                    }
+                }
+            )
+        }
     }
 }
+

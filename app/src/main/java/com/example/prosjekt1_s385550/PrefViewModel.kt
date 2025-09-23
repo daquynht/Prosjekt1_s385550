@@ -13,9 +13,10 @@ class PrefViewModel(application: Application) : AndroidViewModel(application) {
         sharedPreferences.edit().putString("verdi", verdi).apply()
     }
 
-    fun hentPref(): String? {
+    fun hentPref(): String {
         val sharedPreferences: SharedPreferences =
             getApplication<Application>().getSharedPreferences("Mine Preferanser", Context.MODE_PRIVATE)
-        return sharedPreferences.getString("verdi", "")
+        // Hvis brukeren aldri har valgt → returner "5" som standard
+        return sharedPreferences.getString("verdi", "5") ?: "5"
     }
 }
