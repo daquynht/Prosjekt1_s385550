@@ -19,8 +19,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             IntroComposeTheme {
                 val navController = rememberNavController()
-
-                // Opprett PrefViewModel
                 val prefViewModel: PrefViewModel = viewModel()
 
                 NavHost(navController = navController, startDestination = "mainMenu") {

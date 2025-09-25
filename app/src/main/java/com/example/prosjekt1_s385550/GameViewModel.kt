@@ -24,14 +24,25 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     private val usedIndices = mutableSetOf<Int>()
 
     /** Starter et nytt spill med valgt antall spørsmål */
-    fun startGame(numQuestions: Int) {
+    fun startGame(numQuestions: Int, prefViewModel: PrefViewModel) {
         totalQuestions = numQuestions
         score = 0
         questionsAnswered = 0
         usedIndices.clear()
+
+        // Hent antall oppgaver som allerede er gjort
+        val antallGjort = prefViewModel.hentAntallGjort()
+        if (antallGjort >= questionsArray.size) {
+            // Alle oppgaver er allerede gjort
+            feedback = "Du har gjort alle oppgaver! 🎉"
+            currentQuestion = ""
+            return
+        }
+
         loadNewQuestion()
     }
 
+    /** Laster et nytt spørsmål som ikke er brukt */
     fun loadNewQuestion() {
         if (questionsAnswered >= totalQuestions) {
             feedback = "Spillet er ferdig! Du fikk $score av $totalQuestions riktige 🎉"
@@ -39,6 +50,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
             return
         }
 
+        // Finn et tilfeldig spørsmål som ikke er brukt
         var index: Int
         do {
             index = questionsArray.indices.random()
@@ -59,7 +71,8 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         currentAnswer = ""
     }
 
-    fun checkAnswer() {
+    /** Sjekker svaret og oppdaterer score og antall oppgaver gjort */
+    fun checkAnswer(prefViewModel: PrefViewModel) {
         val userAnswer = currentAnswer.toIntOrNull()
         if (userAnswer == null) {
             feedback = "Skriv inn et tall!"
@@ -74,6 +87,10 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         } else {
             feedback = "Feil! Svaret var ${answersArray[currentIndex]}"
         }
+
+        // Oppdater antall oppgaver gjort globalt
+        val totalDone = prefViewModel.hentAntallGjort() + 1
+        prefViewModel.settAntallGjort(totalDone)
 
         // Last neste spørsmål hvis ikke ferdig
         loadNewQuestion()
