@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.prosjekt1_s385550.ui.screens.GameScreen
 import com.example.prosjekt1_s385550.ui.screens.MainMenu
 import com.example.prosjekt1_s385550.ui.screens.PrefScreen
+import com.example.prosjekt1_s385550.ui.screens.AboutGame
 import com.example.prosjekt1_s385550.ui.theme.IntroComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,13 +29,11 @@ class MainActivity : ComponentActivity() {
                             prefViewModel = prefViewModel,
                             onStartClick = { navController.navigate("game") },
                             onPrefClick = { navController.navigate("preferences") },
-                            onAboutClick = { navController.navigate("about") } // vi lager senere
+                            onAboutClick = { navController.navigate("about") }
                         )
                     }
                     composable("game") {
-                        // Opprett GameViewModel når vi er i gameskjermen
                         val gameViewModel: GameViewModel = viewModel()
-
                         GameScreen(
                             prefViewModel = prefViewModel,
                             gameViewModel = gameViewModel,
@@ -47,9 +46,11 @@ class MainActivity : ComponentActivity() {
                             onBack = { navController.popBackStack() }
                         )
                     }
+                    composable("about") {
+                        AboutGame(onBack = { navController.popBackStack() })
+                    }
                 }
             }
         }
     }
 }
-

@@ -3,23 +3,26 @@ package com.example.prosjekt1_s385550.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.prosjekt1_s385550.PrefViewModel
 import com.example.prosjekt1_s385550.R
+import com.example.prosjekt1_s385550.ui.components.AppTopBar
 import com.example.prosjekt1_s385550.ui.theme.ButtonGreen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainMenu(
     prefViewModel: PrefViewModel,
@@ -27,69 +30,92 @@ fun MainMenu(
     onPrefClick: () -> Unit,
     onAboutClick: () -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        // Bakgrunnsbilde
-        Image(
-            painter = painterResource(id = R.drawable.bakgrunnsbilde),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
-
-        // Knapper og tittel
-        Column(
+    Scaffold(
+        topBar = {
+            AppTopBar(title = "MathBite")
+        }
+    ) { padding ->
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(32.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(padding)
         ) {
-            // Tittel med skygge
-            Text(
-                text = "Mattespill",
-                fontSize = 45.sp,
-                color = ButtonGreen,
-                fontWeight = FontWeight.Bold,
+            // Bakgrunnsbilde
+            Image(
+                painter = painterResource(id = R.drawable.bakgrunnsbilde),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .padding(bottom = 110.dp)
+                    .matchParentSize()
+                    .scale(1.2f) // 1.0 = original, > 1.0 = zoom inn
             )
 
-            val buttonModifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp)
-
-            Button(
-                onClick = onStartClick,
-                modifier = buttonModifier,
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = ButtonGreen)
+            // Knapper
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(32.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Start spill", fontSize = 24.sp)
-            }
+                val buttonModifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
 
-            Spacer(modifier = Modifier.height(16.dp))
+                // Start-knapp
+                Button(
+                    onClick = onStartClick,
+                    modifier = buttonModifier,
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = ButtonGreen)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.PlayArrow,
+                        contentDescription = "Start",
+                        tint = Color.White,
+                        modifier = Modifier.size(28.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "Start spill", fontSize = 24.sp, color = Color.White)
+                }
 
-            Button(
-                onClick = onPrefClick,
-                modifier = buttonModifier,
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = ButtonGreen)
-            ) {
-                Text(text = "Preferanser", fontSize = 24.sp)
-            }
+                Spacer(modifier = Modifier.height(16.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
+                // Preferanser-knapp
+                Button(
+                    onClick = onPrefClick,
+                    modifier = buttonModifier,
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = ButtonGreen)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Settings,
+                        contentDescription = "Preferanser",
+                        tint = Color.White,
+                        modifier = Modifier.size(28.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "Preferanser", fontSize = 24.sp, color = Color.White)
+                }
 
-            Button(
-                onClick = onAboutClick,
-                modifier = buttonModifier,
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = ButtonGreen)
-            ) {
-                Text(text = "Om spillet", fontSize = 24.sp)
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Om spillet-knapp
+                Button(
+                    onClick = onAboutClick,
+                    modifier = buttonModifier,
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = ButtonGreen)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Info,
+                        contentDescription = "Om spillet",
+                        tint = Color.White,
+                        modifier = Modifier.size(28.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "Om spillet", fontSize = 24.sp, color = Color.White)
+                }
             }
         }
     }
