@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -62,7 +63,7 @@ fun MainMenu(
 
                 // Overskrift
                 Text(
-                    text = "MathBite",
+                    text = stringResource(id = R.string.game_title),
                     fontSize = 55.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = Color.White,
@@ -107,7 +108,7 @@ fun MainMenu(
                         modifier = Modifier.size(28.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Preferanser", fontSize = 24.sp, color = Color.White)
+                    Text(text = stringResource(id = R.string.preferences), fontSize = 24.sp, color = Color.White)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -126,7 +127,7 @@ fun MainMenu(
                         modifier = Modifier.size(28.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Om spillet", fontSize = 24.sp, color = Color.White)
+                    Text(text = stringResource(id = R.string.about_game), fontSize = 24.sp, color = Color.White)
                 }
             }
         }

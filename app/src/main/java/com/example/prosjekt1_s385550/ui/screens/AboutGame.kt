@@ -7,11 +7,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.prosjekt1_s385550.ui.components.AppTopBar
+import androidx.compose.ui.res.stringResource
+import com.example.prosjekt1_s385550.R
 
 @Composable
 fun AboutGame(onBack: () -> Unit) {
@@ -36,7 +39,7 @@ fun AboutGame(onBack: () -> Unit) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Om MathBite",
+                text = stringResource(id = R.string.about_game),
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
@@ -45,10 +48,7 @@ fun AboutGame(onBack: () -> Unit) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "MathBite er et spennende mattespill hvor du kan bli bedre i matte - én bit om gangen!\n\n" +
-                        "Du kan velge hvor mange oppgaver du ønsker å spille med i Preferanser (5, 10 eller 15).\n\n" +
-                        "Hver oppgave gir deg poeng, og målet er å få flest riktige svar.\n\n" +
-                        "Lykke til og ha det gøy med MathBite!",
+                text = stringResource(id = R.string.about_game_text),
                 fontSize = 18.sp,
                 lineHeight = 28.sp
             )

@@ -23,13 +23,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     val usedIndices = mutableSetOf<Int>()         // Holder styr på totalt brukte spørsmål
 
-    /** Start ny runde med valgt antall spørsmål */
+    // Start ny runde med valgt antall spørsmål
     fun startGame(numQuestions: Int, prefViewModel: PrefViewModel) {
         totalQuestions = numQuestions
         score = 0
         questionsAnswered = 0
 
-        // Hent totalt antall spørsmål som allerede er gjort
+        // hent hvor mange oppgaver som allerede er gjort totalt
         val antallGjort = prefViewModel.hentAntallGjort()
         usedIndices.clear()
         for (i in 0 until antallGjort) {
@@ -39,7 +39,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         loadNewQuestion(prefViewModel)
     }
 
-    /** Laster et nytt spørsmål som ikke er brukt */
+    // Hent neste spørsmål som ikke er brukt
     fun loadNewQuestion(prefViewModel: PrefViewModel) {
         if (questionsAnswered >= totalQuestions || usedIndices.size >= questionsArray.size) {
             currentQuestion = ""
@@ -68,14 +68,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         currentAnswer = ""
     }
 
+    //Sjekk svar, og passer på at brukerinput ikke er null
     fun checkAnswer(prefViewModel: PrefViewModel) {
         val userAnswer = currentAnswer.toIntOrNull()
         if (userAnswer == null) {
             feedback = "Skriv inn et tall!"
             return
         }
-
-        questionsAnswered++
 
         if (userAnswer == answersArray[currentIndex]) {
             score++
@@ -84,22 +83,28 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
             feedback = "Feil! ❌ Svaret var ${answersArray[currentIndex]}"
         }
 
+        questionsAnswered++  // Flyttes etter feedback
+
         // Oppdater totalt antall oppgaver gjort
         val totalDone = prefViewModel.hentAntallGjort() + 1
         prefViewModel.settAntallGjort(totalDone)
-
-        // ❌ Ikke last nytt spørsmål her!
-        // loadNewQuestion(prefViewModel)
     }
 
-    /** Start ny runde med resterende spørsmål */
+    // Prøv igjen denne runden
     fun tryAgain(prefViewModel: PrefViewModel) {
         score = 0
         questionsAnswered = 0
-        loadNewQuestion(prefViewModel)
+        loadNewQuestion(prefViewModel) // trekker fra de som er igjen
     }
 
-    /** Start helt nytt spill */
+    /** Sjekk om en ny runde er mulig */
+    fun canTryAgain(): Boolean {
+        val brukt = usedIndices.size
+        val totalt = questionsArray.size
+        return brukt + totalQuestions <= totalt
+    }
+
+    //Resetter alt for å starte en ny runde
     fun restart(prefViewModel: PrefViewModel) {
         score = 0
         questionsAnswered = 0
@@ -108,4 +113,5 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         loadNewQuestion(prefViewModel)
     }
 }
+
 

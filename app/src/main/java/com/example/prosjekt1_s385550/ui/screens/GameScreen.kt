@@ -3,18 +3,24 @@ package com.example.prosjekt1_s385550.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.prosjekt1_s385550.GameViewModel
 import com.example.prosjekt1_s385550.PrefViewModel
 import com.example.prosjekt1_s385550.ui.components.AppTopBar
+import com.example.prosjekt1_s385550.ui.components.MinDialog
 import com.example.prosjekt1_s385550.ui.theme.ButtonGreen
+import com.example.prosjekt1_s385550.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,6 +29,8 @@ fun GameScreen(
     prefViewModel: PrefViewModel,
     onBack: () -> Unit
 ) {
+    var showDialog = remember { mutableStateOf(false) }
+
     val question = gameViewModel.currentQuestion
     val answer = gameViewModel.currentAnswer
     val feedback = gameViewModel.feedback
@@ -33,7 +41,11 @@ fun GameScreen(
 
     Scaffold(
         topBar = {
-            AppTopBar(title = "MathBite", showBackButton = true, onBackClick = onBack)
+            AppTopBar(
+                title = "MathBite",
+                showBackButton = true,
+                onBackClick = { showDialog.value = true }
+            )
         }
     ) { padding ->
         Column(
@@ -43,18 +55,20 @@ fun GameScreen(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Fremdrift
+            // Progress bar
             LinearProgressIndicator(
-                progress = if (totalQuestions > 0) questionsAnswered / totalQuestions.toFloat() else 0f,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(12.dp)
-                    .clip(RoundedCornerShape(6.dp))
+            progress = { if (totalQuestions > 0) questionsAnswered / totalQuestions.toFloat() else 0f },
+            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(12.dp)
+                                .clip(RoundedCornerShape(6.dp)),
+            color = ProgressIndicatorDefaults.linearColor,
+            trackColor = ProgressIndicatorDefaults.linearTrackColor,
+            strokeCap = ProgressIndicatorDefaults.LinearStrokeCap,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Spørsmål + svar
             // Spørsmål + svar
             Card(
                 modifier = Modifier.fillMaxWidth().height(180.dp),
@@ -109,7 +123,7 @@ fun GameScreen(
                         colors = ButtonDefaults.buttonColors(containerColor = ButtonGreen),
                         shape = RoundedCornerShape(12.dp)
                     ) {
-                        Text("Neste", color = Color.White, fontSize = 20.sp)
+                        Text( text = stringResource(id = R.string.next), color = Color.White, fontSize = 20.sp)
                     }
                 }
             }
@@ -138,9 +152,16 @@ fun GameScreen(
                             }
 
                             val onClickAction = when (key) {
-                                "C" -> { { gameViewModel.clearAnswer() } }
-                                "=" -> { { gameViewModel.checkAnswer(prefViewModel) } } // Enter-funksjon
-                                else -> { { gameViewModel.appendDigit(key) } }
+                                "C" -> {
+                                    { gameViewModel.clearAnswer() }
+                                }
+
+                                "=" -> {
+                                    { gameViewModel.checkAnswer(prefViewModel) }
+                                } // Enter-funksjon
+                                else -> {
+                                    { gameViewModel.appendDigit(key) }
+                                }
                             }
 
                             Button(
@@ -174,18 +195,16 @@ fun GameScreen(
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
 
-                    // Hvis fortsatt spørsmål igjen totalt → prøv igjen, ellers restart
-                    val totalSpm = gameViewModel.usedIndices.size
-                    if (totalSpm < gameViewModel.totalQuestions) {
+                    if (gameViewModel.canTryAgain()) {
                         Button(
                             onClick = { gameViewModel.tryAgain(prefViewModel) },
-                            colors = ButtonDefaults.buttonColors(containerColor = ButtonGreen),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                             shape = RoundedCornerShape(16.dp),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(64.dp)
                         ) {
-                            Text("Prøv igjen 🔄", fontSize = 22.sp, color = Color.White)
+                            Text(text = stringResource(id = R.string.try_again), fontSize = 22.sp, color = Color.White)
                         }
                     } else {
                         Button(
@@ -196,11 +215,22 @@ fun GameScreen(
                                 .fillMaxWidth()
                                 .height(64.dp)
                         ) {
-                            Text("Restart spillet 🔄", fontSize = 22.sp, color = Color.White)
+                            Text(stringResource(id = R.string.restart), fontSize = 22.sp, color = Color.White)
                         }
                     }
                 }
             }
+        }
+        if (showDialog.value) {
+            MinDialog(
+                onDismissRequest = { showDialog.value = false },
+                onConfirmation = {
+                    showDialog.value = false
+                    onBack() // kaller MainMenu
+                },
+                dialogTitle = stringResource (id = R.string.exit_gamle_title),
+                dialogText = stringResource(id = R.string.exit_game_text)
+            )
         }
     }
 }

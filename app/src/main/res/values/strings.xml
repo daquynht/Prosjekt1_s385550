@@ -5,7 +5,14 @@
     <string name="start_game"> Start spill </string>
     <string name="about_game"> Om spillet</string>
     <string name="preferences"> Preferanser </string>
-
-    <!-- Tittel -->
-    <string name="game_title">Mattespill</string>
+    <string name="game_title">MathBite</string>
+    <string name="exit_gamle_title">Avslutte spillet?</string>
+    <string name="exit_game_text"> Er du sikker på at du vil avslutte spillet?</string>
+    <string name= "correct">Riktig!</string>
+    <string name= "incorrect">Feil!</string>
+    <string name = "next">Neste</string>
+    <string name ="restart">"Restart spillet 🔄</string>
+  <string name ="about_game_text">MathBite er et spennende mattespill hvor du kan bli bedre i matte - én bit om gangen!
+                        "Du kan velge hvor mange oppgaver du ønsker å spille med i Preferanser (5, 10 eller 15). Hver oppgave gir deg poeng, og målet er å få flest riktige svar.Lykke til og ha det gøy med MathBit! </string>
+<string name= "try_again">Prøv igjen </string>
 </resources>

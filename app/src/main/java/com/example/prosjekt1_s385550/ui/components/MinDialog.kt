@@ -12,7 +12,7 @@ fun MinDialog(
     onConfirmation: () -> Unit,
     dialogTitle: String,
     dialogText: String,
-    icon: ImageVector = Icons.Filled.Info // Optional icon
+    icon: ImageVector = Icons.Filled.Info //
 ) {
     AlertDialog(
         icon = {
