@@ -17,40 +17,37 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     var feedback by mutableStateOf("")
     var currentQuestion by mutableStateOf("")
 
-    var score by mutableStateOf(0)
-    var questionsAnswered by mutableStateOf(0)
-    var totalQuestions by mutableStateOf(0)
+    var score by mutableStateOf(0)                // Antall riktige denne runden
+    var questionsAnswered by mutableStateOf(0)    // Antall spørsmål besvart denne runden
+    var totalQuestions by mutableStateOf(0)       // Antall spørsmål i runden
 
-    private val usedIndices = mutableSetOf<Int>()
+    val usedIndices = mutableSetOf<Int>()         // Holder styr på totalt brukte spørsmål
 
-    /** Starter et nytt spill med valgt antall spørsmål */
+    /** Start ny runde med valgt antall spørsmål */
     fun startGame(numQuestions: Int, prefViewModel: PrefViewModel) {
         totalQuestions = numQuestions
         score = 0
         questionsAnswered = 0
-        usedIndices.clear()
 
-        // Hent antall oppgaver som allerede er gjort
+        // Hent totalt antall spørsmål som allerede er gjort
         val antallGjort = prefViewModel.hentAntallGjort()
-        if (antallGjort >= questionsArray.size) {
-            // Alle oppgaver er allerede gjort
-            feedback = "Du har gjort alle oppgaver! 🎉"
-            currentQuestion = ""
-            return
+        usedIndices.clear()
+        for (i in 0 until antallGjort) {
+            usedIndices.add(i)
         }
 
-        loadNewQuestion()
+        loadNewQuestion(prefViewModel)
     }
 
     /** Laster et nytt spørsmål som ikke er brukt */
-    fun loadNewQuestion() {
-        if (questionsAnswered >= totalQuestions) {
-            feedback = "Spillet er ferdig! Du fikk $score av $totalQuestions riktige 🎉"
+    fun loadNewQuestion(prefViewModel: PrefViewModel) {
+        if (questionsAnswered >= totalQuestions || usedIndices.size >= questionsArray.size) {
             currentQuestion = ""
+            currentAnswer = ""
+            feedback = ""
             return
         }
 
-        // Finn et tilfeldig spørsmål som ikke er brukt
         var index: Int
         do {
             index = questionsArray.indices.random()
@@ -71,7 +68,6 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         currentAnswer = ""
     }
 
-    /** Sjekker svaret og oppdaterer score og antall oppgaver gjort */
     fun checkAnswer(prefViewModel: PrefViewModel) {
         val userAnswer = currentAnswer.toIntOrNull()
         if (userAnswer == null) {
@@ -83,16 +79,33 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
         if (userAnswer == answersArray[currentIndex]) {
             score++
-            feedback = "Riktig! 🎉"
+            feedback = "Riktig! ✅"
         } else {
-            feedback = "Feil! Svaret var ${answersArray[currentIndex]}"
+            feedback = "Feil! ❌ Svaret var ${answersArray[currentIndex]}"
         }
 
-        // Oppdater antall oppgaver gjort globalt
+        // Oppdater totalt antall oppgaver gjort
         val totalDone = prefViewModel.hentAntallGjort() + 1
         prefViewModel.settAntallGjort(totalDone)
 
-        // Last neste spørsmål hvis ikke ferdig
-        loadNewQuestion()
+        // ❌ Ikke last nytt spørsmål her!
+        // loadNewQuestion(prefViewModel)
+    }
+
+    /** Start ny runde med resterende spørsmål */
+    fun tryAgain(prefViewModel: PrefViewModel) {
+        score = 0
+        questionsAnswered = 0
+        loadNewQuestion(prefViewModel)
+    }
+
+    /** Start helt nytt spill */
+    fun restart(prefViewModel: PrefViewModel) {
+        score = 0
+        questionsAnswered = 0
+        prefViewModel.settAntallGjort(0)
+        usedIndices.clear()
+        loadNewQuestion(prefViewModel)
     }
 }
+

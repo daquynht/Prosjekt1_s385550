@@ -11,9 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Prosjekt1_s385550">
-        <activity
-            android:name=".GameActivity"
-            android:exported="true" />
+
+        <!-- MainActivity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -21,12 +20,10 @@
             android:theme="@style/Theme.Prosjekt1_s385550">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PreferanserActivity"
-            android:exported="true" />
+
     </application>
 
 </manifest>

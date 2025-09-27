@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.prosjekt1_s385550.PrefViewModel
@@ -58,6 +59,17 @@ fun MainMenu(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
+                // Overskrift
+                Text(
+                    text = "MathBite",
+                    fontSize = 55.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color.White,
+                    style = MaterialTheme.typography.headlineLarge,
+                    modifier = Modifier.padding(bottom = 160.dp)
+                )
+
                 val buttonModifier = Modifier
                     .fillMaxWidth()
                     .height(80.dp)
